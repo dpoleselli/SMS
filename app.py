@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 
 @app.route("/", methods=['GET', 'POST'])
-def incoming_sms():
+def test():
     return Response({'body': 'hello'})
 
 
