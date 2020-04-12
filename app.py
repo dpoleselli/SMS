@@ -1,5 +1,5 @@
-from flask import Flask, request, redirect
-from requests import Response
+from flask import Flask, request
+import random
 from twilio.twiml.messaging_response import MessagingResponse
 
 app = Flask(__name__)
@@ -20,6 +20,9 @@ def incoming_sms():
         resp.message("Hi!")
     elif body == 'bye':
         resp.message("Goodbye")
+    elif body.contains('joke'):
+        lines = open('static/shortjokes.csv').read().splitlines()
+        resp.message(random.choice(lines)[1])
     else:
         resp.message("Que tal mi amigo?")
 
