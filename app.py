@@ -20,7 +20,7 @@ def incoming_sms():
         resp.message("Hi!")
     elif body == 'bye':
         resp.message("Goodbye")
-    elif body.contains('joke'):
+    elif 'joke' in body:
         lines = open('static/shortjokes.csv').read().splitlines()
         resp.message(random.choice(lines)[1])
     else:
