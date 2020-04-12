@@ -15,16 +15,19 @@ def incoming_sms():
     # Start our TwiML response
     resp = MessagingResponse()
 
+    mes = '-\n'
     # Determine the right reply for this message
     if body == 'hello':
-        resp.message("Hi!")
+        mes += 'Hi!'
     elif body == 'bye':
-        resp.message("Goodbye")
+        mes += 'Goodbye!'
     elif 'joke' in body:
         lines = open('static/shortjokes.csv').read().splitlines()
-        resp.message(random.choice(lines)[1])
+        mes += random.choice(lines).split(',')[1].strip('"')
     else:
-        resp.message("Que tal mi amigo?")
+        mes += 'Que tal mi amigo?'
+
+    resp.message(mes)
 
     return str(resp)
 
