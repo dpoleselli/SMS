@@ -28,19 +28,18 @@ def incoming_sms():
     elif 'covid' in body:
         if 'us' in body:
             x = requests.get('https://covidtracking.com/api/us')
-            val = x.json()
-            if x.status_code == 200 and not val['error']:
+            if x.status_code == 200:
+                val = x.json()
                 mes += 'US:\n'
                 mes += str(val[0]['positive']) + ' positive cases\n'
                 mes += str(val[0]['death']) + ' deaths'
             else:
                 mes += 'Sorry, something went wrong: \n'
-                mes += val['message']
         elif 'state' in body:
             vals = body.split('-')
             x = requests.get('https://covidtracking.com/api/states?state=' + vals[1].upper())
             val = x.json()
-            if x.status_code == 200 and not val['error']:
+            if x.status_code == 200 and 'error' not in val:
                 mes += vals[1] + ':\n'
                 mes += str(val['positive']) + ' positive cases\n'
                 mes += str(val['death']) + ' deaths'
