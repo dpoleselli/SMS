@@ -30,7 +30,7 @@ def incoming_sms():
             x = requests.get('https://covidtracking.com/api/us')
             if x.status_code == 200:
                 val = x.json()
-                mes += str(val[0]['positive']) + ' positive cases'
+                mes += str(val[0]['positive']) + ' positive cases\n'
                 mes += str(val[0]['death']) + ' deaths'
             else:
                 mes += 'Sorry, something went wrong'
@@ -43,6 +43,8 @@ def incoming_sms():
                 mes += str(val['death']) + ' deaths'
             else:
                 mes += 'Sorry, something went wrong'
+        else:
+            mes += 'Please specify what data you\'re looking for'
     else:
         mes += 'Que tal mi amigo?'
 
