@@ -1,6 +1,7 @@
 from flask import Flask, request
 import random
 from twilio.twiml.messaging_response import MessagingResponse
+import requests
 
 app = Flask(__name__)
 
@@ -24,6 +25,24 @@ def incoming_sms():
     elif 'joke' in body:
         lines = open('static/shortjokes.csv').read().splitlines()
         mes += random.choice(lines).split(',')[1].strip('"')
+    elif 'covid' in body:
+        if 'us' in body:
+            x = requests.get('https://covidtracking.com/api/us')
+            if x.status_code == 200:
+                val = x.json()
+                mes += str(val[0]['positive']) + ' positive cases'
+                mes += str(val[0]['death']) + ' deaths'
+            else:
+                mes += 'Sorry, something went wrong'
+        elif 'state' in body:
+            vals = body.split('-')
+            x = requests.get('https://covidtracking.com/api/states?state=' + vals[1])
+            if x.status_code == 200:
+                val = x.json()
+                mes += str(val['positive']) + ' positive cases\n'
+                mes += str(val['death']) + ' deaths'
+            else:
+                mes += 'Sorry, something went wrong'
     else:
         mes += 'Que tal mi amigo?'
 
