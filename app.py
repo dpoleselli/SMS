@@ -37,15 +37,17 @@ def incoming_sms():
                 mes += 'Sorry, something went wrong'
         elif 'state' in body:
             vals = body.split('-')
+            print(vals[1])
             x = requests.get('https://covidtracking.com/api/states?state=' + vals[1])
-            if x.status_code == 200:
-                val = x.json()
+            val = x.json()
+            if x.status_code == 200 and not val['error']:
                 print(val)
                 mes += vals[1] + ':\n'
                 mes += str(val['positive']) + ' positive cases\n'
                 mes += str(val['death']) + ' deaths'
             else:
-                mes += 'Sorry, something went wrong'
+                mes += 'Sorry, something went wrong: \n'
+                mes += val['message']
         else:
             mes += 'Please specify what data you\'re looking for'
     else:
