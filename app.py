@@ -40,6 +40,7 @@ def incoming_sms():
             x = requests.get('https://covidtracking.com/api/states?state=' + vals[1])
             if x.status_code == 200:
                 val = x.json()
+                print(val)
                 mes += vals[1] + ':\n'
                 mes += str(val['positive']) + ' positive cases\n'
                 mes += str(val['death']) + ' deaths'
