@@ -2,8 +2,11 @@ from flask import Flask, request
 import random
 from twilio.twiml.messaging_response import MessagingResponse
 import requests
+import statistics
 
 app = Flask(__name__)
+to_me = []
+to_mel = []
 
 
 @app.route("/sms", methods=['GET', 'POST'])
@@ -48,6 +51,20 @@ def incoming_sms():
                 mes += val['message']
         else:
             mes += 'Please specify what data you\'re looking for'
+    elif 'to mel' in body:
+        vals = body.split('-')
+        if len(vals) == 1:
+            mes = 'Average red lights to mel: ' + str(statistics.mean(to_mel)) + ' out of 29'
+        elif len(vals) == 2:
+            to_mel.append(int(vals[1]))
+            mes = 'New average red lights to mel: ' + str(statistics.mean(to_mel)) + ' out of 29'
+    elif 'to me' in body:
+        vals = body.split('-')
+        if len(vals) == 1:
+            mes = 'Average red lights to me: ' + str(statistics.mean(to_me)) + ' out of 28'
+        elif len(vals) == 2:
+            to_me.append(int(vals[1]))
+            mes = 'New average red lights to me: ' + str(statistics.mean(to_me)) + ' out of 28'
     else:
         mes += 'Que tal mi amigo?'
 
