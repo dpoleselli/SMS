@@ -65,6 +65,9 @@ def incoming_sms():
         elif len(vals) == 2:
             to_me.append(int(vals[1]))
             mes = 'New average red lights to me: ' + str(statistics.mean(to_me)) + ' out of 28'
+    elif 'red light reset' in body:
+        to_me.clear()
+        to_mel.clear()
     else:
         mes += 'Que tal mi amigo?'
 
